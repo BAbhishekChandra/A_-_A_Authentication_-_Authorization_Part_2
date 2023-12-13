@@ -17,9 +17,8 @@ class LoginForm extends Component {
     history.replace('/')
   }
 
-  onSubmitFailure = errorMsg => {
-    // console.log(errorMsg)
-    this.setState({showSubmitError: true, errorMsg})
+  onSubmitFailure = message => {
+    this.setState({showSubmitError: true, errorMsg: message})
   }
 
   submitForm = async event => {
@@ -32,13 +31,15 @@ class LoginForm extends Component {
       body: JSON.stringify(userDetails),
     }
     const response = await fetch(url, options)
+    // console.log(response)
     const data = await response.json()
     console.log(data)
     if (response.ok === true) {
       // this.onSubmitSuccess()
       this.onSubmitSuccess(data.jwt_token)
     } else {
-      this.onSubmitFailure(data.errorMsg)
+      const message = data.error_msg
+      this.onSubmitFailure(message)
     }
   }
 
